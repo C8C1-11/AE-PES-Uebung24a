@@ -3,10 +3,39 @@
 
 #include "pch.h"
 #include <iostream>
+#include <string>
+#include <algorithm>
+#include "Core.h"
+#include "Tools/Date.h"
+
+using namespace std;
+using namespace Teronis::VCPlusPlus;
+using namespace Teronis::VCPlusPlus::Tools;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	// We need the year to determine the amounth of "friday the 13."'s.
+	// PS: "ttb" means "the to be".
+	int year, day = 13, ttbMatchedDayIndex = 5, found = 0;
+	string literalDay = DateTools::toWeekDayName(ttbMatchedDayIndex);
+	transform(literalDay.begin(), literalDay.end(), literalDay.begin(), tolower);
+
+	cout << "This program prints out the " << day << ". day of all months that are " << literalDay << "s.\n";
+	cout << "Enter the year you want to discover:\n";
+	cout << "> ";
+	cin >> year;
+
+	for (int month = 1; month <= 12; month++) {
+		if (DateTools::calcLeapYearWeekDayIndex(year, month, day) == ttbMatchedDayIndex) {
+			cout << "Found date '" << year << "-" << month << "-" << day << "'\n";
+			found++;
+		}
+	}
+
+	if (0 == found)
+		cout << "No dates have been found that matched the criteria.";
+
+	stop(0);
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
